@@ -1,0 +1,199 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Theme tokens as RGB channels (Tailwind uses them as rgb(var(--x) / alpha)).
+ * Dark (default): green-black, teal + terracotta accents. Light: white.
+ * `.theme-dark` forces the dark tokens locally — used for app mockups and illustrations.
+ */
+:root,
+.theme-dark {
+  --ink: 10 14 13;
+  --ink-850: 15 20 19;
+  --ink-800: 21 28 27;
+  --ink-700: 31 40 38;
+  --paper: 232 238 236;
+  --paper-dim: 160 174 170;
+  --paper-mute: 112 126 122;
+  --signal: 61 214 181;
+  --warm: 232 131 90;
+  --on-signal: 4 33 27;
+}
+
+html[data-theme="light"] {
+  --ink: 255 255 255;
+  --ink-850: 247 249 248;
+  --ink-800: 239 243 242;
+  --ink-700: 226 232 230;
+  --paper: 16 24 22;
+  --paper-dim: 70 84 80;
+  --paper-mute: 116 130 126;
+  --signal: 13 148 122;
+  --warm: 199 77 45;
+  --on-signal: 255 255 255;
+}
+
+.theme-dark {
+  color: rgb(var(--paper));
+}
+
+/* Re-declared after the light block so local dark scopes win inside a light page. */
+html[data-theme="light"] .theme-dark {
+  --ink: 10 14 13;
+  --ink-850: 15 20 19;
+  --ink-800: 21 28 27;
+  --ink-700: 31 40 38;
+  --paper: 232 238 236;
+  --paper-dim: 160 174 170;
+  --paper-mute: 112 126 122;
+  --signal: 61 214 181;
+  --warm: 232 131 90;
+  --on-signal: 4 33 27;
+}
+
+:root {
+  --nav-h: 5.5rem;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: var(--nav-h);
+    -webkit-text-size-adjust: 100%;
+    color-scheme: dark;
+  }
+  html[data-theme="light"] {
+    color-scheme: light;
+  }
+
+  body {
+    @apply bg-ink text-paper font-sans antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: rgb(var(--signal));
+    color: rgb(var(--on-signal));
+  }
+
+  :focus-visible {
+    outline: 2px solid rgb(var(--signal));
+    outline-offset: 3px;
+    border-radius: 8px;
+  }
+
+  html.theme-switching *,
+  html.theme-switching *::before,
+  html.theme-switching *::after {
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease !important;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+@layer components {
+  .container-site {
+    @apply mx-auto w-full max-w-site px-5 sm:px-8 lg:px-12;
+  }
+
+  /* Small mono section label with a leading rule: "—— INTERVENTIONS" */
+  .kicker {
+    @apply flex items-center gap-4 font-mono text-xs uppercase tracking-[0.2em] text-signal;
+  }
+  .kicker::before {
+    content: "";
+    @apply h-px w-8 bg-signal/70;
+  }
+
+  .eyebrow {
+    @apply font-mono text-xs uppercase tracking-[0.18em] text-paper-mute;
+  }
+
+  .card {
+    @apply rounded-2xl border border-line bg-ink-850;
+  }
+  html[data-theme="light"] .card {
+    @apply shadow-[0_1px_2px_rgba(0,0,0,0.04),0_8px_24px_-14px_rgba(16,24,22,0.15)];
+  }
+
+  .tag {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-line bg-ink/60 px-3 py-1 font-mono text-[0.72rem] text-paper-dim;
+  }
+  .tag::before {
+    content: "";
+    @apply h-1.5 w-1.5 rounded-full bg-signal;
+  }
+
+  .label {
+    @apply inline-flex items-center rounded-full border border-signal/40 bg-signal-soft px-3 py-1 font-mono text-[0.68rem] uppercase tracking-[0.16em] text-signal;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2.5 rounded-xl bg-signal px-6 py-3.5 font-semibold text-on-signal shadow-[0_10px_30px_-10px_rgb(var(--signal)/0.6)] transition-all duration-300 hover:-translate-y-0.5 hover:brightness-110;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2.5 rounded-xl border border-line bg-ink-850 px-6 py-3.5 font-semibold text-paper transition-all duration-300 hover:-translate-y-0.5 hover:border-paper/30;
+  }
+
+  /* Teal → terracotta gradient text for one highlighted word */
+  .text-gradient {
+    background: linear-gradient(100deg, rgb(var(--signal)) 10%, rgb(var(--warm)) 95%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Dotted backdrop used inside illustration cards */
+  .dots {
+    background-image: radial-gradient(rgb(var(--paper) / 0.08) 1px, transparent 1px);
+    background-size: 18px 18px;
+  }
+
+  .link-underline {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .link-underline:hover,
+  .link-underline:focus-visible {
+    background-size: 100% 1px;
+  }
+
+  /* kept for the case-study and 404 pages */
+  .chip {
+    @apply tag;
+  }
+  .serif-accent {
+    @apply text-gradient;
+  }
+}
+
+/* Show an element only in one theme (e.g. dark/light screenshots of the same screen). */
+html[data-theme="light"] .show-dark,
+html:not([data-theme="light"]) .show-light {
+  display: none;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .text-pretty {
+    text-wrap: pretty;
+  }
+}
