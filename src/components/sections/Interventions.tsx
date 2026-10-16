@@ -43,7 +43,7 @@ function Wide({ item, index, className }: { item: Item; index: number; className
       <div className="flex items-center">
         <Text item={item} index={index} />
       </div>
-      <div className="dots relative min-h-[13rem] border-line max-md:border-t md:border-l">
+      <div className="dots relative min-h-[22rem] border-line max-md:border-t md:border-l">
         <Visual id={item.id} />
       </div>
     </Reveal>
@@ -61,30 +61,72 @@ function Tall({ item, index, className }: { item: Item; index: number; className
   );
 }
 
+/* Syntax colors for the code snippet (theme tokens, readable in light and dark). */
+const K = ({ children }: { children: React.ReactNode }) => <span className="text-warm">{children}</span>; // keyword
+const T = ({ children }: { children: React.ReactNode }) => <span className="text-signal">{children}</span>; // type / symbol
+const S = ({ children }: { children: React.ReactNode }) => <span className="text-paper-dim">{children}</span>; // string
+const C = ({ children }: { children: React.ReactNode }) => <span className="italic text-paper-mute">{children}</span>; // comment
+
+/**
+ * Modern Angular 19 component as an editor excerpt: standalone, OnPush, inject(),
+ * signal inputs, computed state and a typed output — plus the layered architecture it sits in.
+ * Illustrative code, not copied from a client codebase.
+ */
+function AngularSnippet() {
+  const lines: React.ReactNode[] = [
+    <><T>@Component</T>({"{"}</>,
+    <>  selector: <S>&apos;eco-intervention-list&apos;</S>,</>,
+    <>  changeDetection: <T>OnPush</T>,</>,
+    <>  imports: [<T>DataTable</T>, <T>StatusBadge</T>],</>,
+    <>{"})"}</>,
+    <><K>export class</K> <T>InterventionList</T> {"{"}</>,
+    <>  <K>private</K> store = <T>inject</T>(<T>InterventionStore</T>);</>,
+    <>  filters = <T>input</T>.required&lt;<T>Filters</T>&gt;();</>,
+    <>  selected = <T>output</T>&lt;<T>Intervention</T>&gt;();</>,
+    <>  <C>{"// état dérivé, mémoïsé"}</C></>,
+    <>  rows = <T>computed</T>(() =&gt;</>,
+    <>    <K>this</K>.store.query(<K>this</K>.filters()));</>,
+    <>{"}"}</>,
+  ];
+
+  return (
+    <div className="absolute inset-0 flex flex-col p-4 sm:p-5" aria-hidden="true">
+      <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl border border-line bg-ink/80">
+        {/* editor tabs */}
+        <div className="flex items-center gap-1 border-b border-line px-2 pt-2 font-mono text-[0.62rem]">
+          <span className="whitespace-nowrap rounded-t-md border border-b-0 border-line bg-ink-850 px-2.5 py-1 text-paper">intervention-list.ts</span>          <span className="ml-auto flex items-center gap-1.5 px-2 text-paper-mute">
+            <span className="h-1.5 w-1.5 rounded-full bg-signal" /> strict
+          </span>
+        </div>
+        <pre className="flex-1 overflow-hidden px-3 py-2.5 font-mono text-[0.66rem] leading-[1.6] text-paper sm:text-[0.7rem]">
+          {lines.map((l, i) => (
+            <div key={i} className="flex">
+              <span className="w-6 shrink-0 select-none pr-2 text-right text-paper-mute/60">{i + 1}</span>
+              <span className="whitespace-pre">{l}</span>
+            </div>
+          ))}
+        </pre>
+      </div>
+
+      {/* layered architecture + practices */}
+      <div className="mt-3 flex flex-wrap items-center gap-1.5 font-mono text-[0.62rem]">
+        {["feature", "data-access", "ui"].map((layer, i) => (
+          <span key={layer} className="flex items-center gap-1.5">
+            <span className={`rounded-md border px-2 py-0.5 ${i === 0 ? "border-signal/50 bg-signal-soft text-signal" : "border-line text-paper"}`}>{layer}</span>
+            {i < 2 && <span className="text-paper-mute">→</span>}
+          </span>
+        ))}
+        <span className="ml-auto text-paper-mute">Signals · OnPush · standalone · RxJS</span>
+      </div>
+    </div>
+  );
+}
+
 /** Small diagrammatic illustrations, one per intervention. */
 function Visual({ id }: { id: Item["id"] }) {
   switch (id) {
     case "frontend":
-      return (
-        <div className="absolute inset-0 flex flex-col justify-center gap-3 p-7 font-mono text-xs" aria-hidden="true">
-          <div className="flex items-center gap-2">
-            <span className="rounded-md border border-signal/50 bg-signal-soft px-2.5 py-1 text-signal">{"<app-shell>"}</span>
-          </div>
-          {[
-            ["<list-page>", "<data-table>"],
-            ["<detail-page>", "<form-field>"],
-            ["<settings-page>", "<data-table>"],
-          ].map(([m, c], i) => (
-            <div key={i} className="flex items-center gap-2 pl-6">
-              <span className="text-paper-mute">└</span>
-              <span className="rounded-md border border-line bg-ink-850 px-2.5 py-1 text-paper">{m}</span>
-              <span className="h-px w-4 border-t border-dashed border-paper/30" />
-              <span className="rounded-md border border-warm/40 px-2 py-1 text-warm">{c}</span>
-            </div>
-          ))}
-          <p className="pl-6 text-paper-mute">composants réutilisables · Angular 19</p>
-        </div>
-      );
+      return <AngularSnippet />;
     case "mobile":
       return (
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 font-mono text-[0.7rem]" aria-hidden="true">

@@ -1,14 +1,26 @@
-import { BrowserShot } from "@/components/projects/OninaScreens";
+import { getProject } from "@/content/projects";
+import { BrowserShot, PhoneShot } from "@/components/projects/Screens";
 
-/** Cover per project: real screenshot for Onina, abstract data-free illustration otherwise. */
+/** Cover per project: the real web capture when there is one, an abstract data-free illustration otherwise. */
 export function ProjectCover({ slug }: { slug: string }) {
+  const shots = getProject(slug)?.screenshots;
+  if (shots?.web) {
+    return (
+      <div className="absolute inset-0 overflow-hidden px-6 pt-6">
+        <BrowserShot
+          shots={shots}
+          className={`max-w-2xl translate-y-4 transition-transform duration-700 ease-out group-hover:translate-y-1 ${shots.mobile ? "w-[82%]" : "mx-auto w-full"}`}
+        />
+        {shots.mobile && (
+          <PhoneShot
+            shots={shots}
+            className="absolute right-4 top-5 w-[27%] transition-transform duration-700 ease-out group-hover:-translate-y-2"
+          />
+        )}
+      </div>
+    );
+  }
   switch (slug) {
-    case "onina":
-      return (
-        <div className="absolute inset-0 flex items-end justify-center overflow-hidden px-8 pt-10">
-          <BrowserShot className="w-full max-w-2xl translate-y-6 transition-transform duration-700 ease-out group-hover:translate-y-2" />
-        </div>
-      );
     case "ecorec":
       return (
         <div className="absolute inset-0 flex flex-col justify-center gap-2 p-8" aria-hidden="true">

@@ -1,3 +1,17 @@
+export type Screenshots = {
+  /** Web capture shown in a browser frame (dark theme, or the only capture). */
+  web?: string;
+  /** Optional light-theme capture of the same screen, shown when the site is in light mode. */
+  webLight?: string;
+  /** Pixel size of the web capture (all web captures of a project share it). */
+  webSize?: { w: number; h: number };
+  /** Mobile capture shown in a phone frame. */
+  mobile?: string;
+  /** Address shown in the browser bar. */
+  url?: string;
+  alt: string;
+};
+
 export type Project = {
   slug: string;
   name: string;
@@ -7,7 +21,12 @@ export type Project = {
   role: string;
   stack: string[];
   platforms: string[];
+  /** The flagship project, shown large at the top of the Projects section. */
   featured?: boolean;
+  /** Short pitch used on the flagship card. */
+  pitch?: string;
+  /** Short highlights (2 columns) used on the flagship card. */
+  highlights?: string[];
   context: string;
   problem: string;
   solution: string;
@@ -16,19 +35,70 @@ export type Project = {
   /** Only real, provided results. Leave undefined when unknown — never invent. */
   results?: { value: string; label: string }[];
   status?: string;
+  screenshots?: Screenshots;
 };
 
 export const projects: Project[] = [
   {
+    slug: "ecorec",
+    name: "EcoREC",
+    category: "Plateforme de gestion métier",
+    year: "2021 — 2026",
+    company: "Kerlog",
+    role: "Full-Stack Developer",
+    stack: ["Angular 19", "TypeScript"],
+    platforms: ["Web"],
+    featured: true,
+    pitch:
+      "Le logiciel de gestion des entreprises françaises de collecte, récupération, recyclage et traitement des déchets. Une suite de modules métier, utilisée par plus de 350 clients, sur laquelle j'ai développé et fait évoluer plusieurs modules pendant plus de 5 ans.",
+    highlights: [
+      "Interventions & stock",
+      "Tournées & contenants",
+      "Parc & maintenance",
+      "Relation client & devis",
+      "Contrats",
+      "Facturation & paiements",
+    ],
+    context:
+      "Plateforme de gestion destinée aux entreprises françaises de collecte, récupération, recyclage et traitement des déchets, développée chez Kerlog.",
+    problem:
+      "Des entreprises du secteur des déchets ont besoin d'un logiciel de gestion adapté à leurs métiers, capable d'évoluer avec leurs besoins.",
+    solution:
+      "Une suite de modules métier (EcoBAC, EcoBennes, EcoGAR, EcoGRC, EcoContrat, EcoFact…) réunis dans un même tableau de bord. J'y ai développé et fait évoluer plusieurs modules et des fonctionnalités web complexes en Angular 19 et TypeScript, avec des interfaces métier et des composants réutilisables.",
+    roleDetails: [
+      "Développement et évolution de plusieurs modules",
+      "Analyse des besoins métier",
+      "Conception d'interfaces métier",
+      "Création de composants réutilisables",
+      "Maintenance évolutive et corrective",
+      "Collaboration avec les équipes techniques et fonctionnelles",
+    ],
+    features: [
+      "Tableau de bord unique donnant accès à tous les modules",
+      "Interventions, validation des interventions et stock (EcoBAC)",
+      "Tournées, contenants, planning et retours des bons (EcoBennes)",
+      "Parc et entretien, planning des moyens et de la maintenance (EcoGAR)",
+      "Rendez-vous, devis et relances (EcoGRC)",
+      "Contrats : approvisionnement, expédition, facturation (EcoContrat)",
+      "Facturation, pro forma, achats, ventes, paiements et relances (EcoFact)",
+    ],
+    results: [{ value: "350+", label: "clients utilisent la plateforme" }],
+    screenshots: {
+      web: "/projects/ecorec/dashboard.png",
+      webSize: { w: 1919, h: 928 },
+      url: "ecorec · tableau de bord",
+      alt: "EcoREC — tableau de bord donnant accès aux modules EcoBAC, EcoBennes, EcoGAR, EcoGRC, EcoContrat et EcoFact",
+    },
+  },
+  {
     slug: "onina",
     name: "Onina",
-    category: "Real Estate Platform",
+    category: "Plateforme immobilière",
     year: "2025 — aujourd'hui",
     company: "Onina · Founder",
     role: "Founder & Full-Stack Developer",
     stack: ["NestJS", "Next.js", "React Native", "OpenAI API"],
     platforms: ["Web", "Mobile", "AI"],
-    featured: true,
     status: "En cours",
     context:
       "Projet entrepreneurial lancé en 2025 à Madagascar. Onina est une plateforme web et mobile dédiée au secteur immobilier.",
@@ -54,37 +124,14 @@ export const projects: Project[] = [
       "Interface en français et en malagasy, thème clair et sombre",
       "Web (Next.js) et mobile (React Native) sur une API NestJS",
     ],
-  },
-  {
-    slug: "ecorec",
-    name: "EcoREC",
-    category: "Business Management Platform",
-    year: "2021 — 2026",
-    company: "Kerlog",
-    role: "Full-Stack Developer",
-    stack: ["Angular 19", "TypeScript"],
-    platforms: ["Web"],
-    context:
-      "Plateforme de gestion destinée aux entreprises françaises de collecte, récupération, recyclage et traitement des déchets, développée chez Kerlog.",
-    problem:
-      "Des entreprises du secteur des déchets ont besoin d'un logiciel de gestion adapté à leurs métiers, capable d'évoluer avec leurs besoins.",
-    solution:
-      "Développement et évolution de plusieurs modules et de fonctionnalités web complexes en Angular 19 et TypeScript, avec des interfaces métier et des composants réutilisables.",
-    roleDetails: [
-      "Développement et évolution de plusieurs modules",
-      "Analyse des besoins métier",
-      "Conception d'interfaces métier",
-      "Création de composants réutilisables",
-      "Maintenance évolutive et corrective",
-      "Collaboration avec les équipes techniques et fonctionnelles",
-    ],
-    features: [
-      "Modules métier",
-      "Fonctionnalités web complexes",
-      "Interfaces métier",
-      "Bibliothèque de composants réutilisables",
-    ],
-    results: [{ value: "350+", label: "clients utilisent la plateforme" }],
+    screenshots: {
+      web: "/projects/onina/web-dark.png",
+      webLight: "/projects/onina/web-light.png",
+      webSize: { w: 1847, h: 929 },
+      mobile: "/projects/onina/mobile.jpg",
+      url: "onina.mg",
+      alt: "Onina — recherche, filtres, annonces et carte des biens",
+    },
   },
   {
     slug: "platip",

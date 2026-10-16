@@ -47,7 +47,7 @@ export function Console() {
           <span className="h-2.5 w-2.5 rounded-full bg-paper/20" />
           <span className="h-2.5 w-2.5 rounded-full bg-paper/20" />
         </span>
-        <span className="font-mono text-xs text-paper-mute">onina · pipeline</span>
+        <span className="font-mono text-xs text-paper-mute">produit · pipeline</span>
         <span className="ml-auto rounded-full border border-warm/50 px-2.5 py-0.5 font-mono text-[0.62rem] uppercase tracking-[0.14em] text-warm">
           Illustration
         </span>
@@ -106,7 +106,7 @@ export function Console() {
         {/* terminal */}
         <div className="rounded-xl border border-line bg-ink/70 p-4 font-mono text-[0.78rem] leading-relaxed">
           <p>
-            <span className="text-signal">~/onina$</span> <span className="text-paper">git push origin main</span>
+            <span className="text-signal">~/app$</span> <span className="text-paper">git push origin main</span>
           </p>
           <ul className="mt-2 min-h-[6.2rem]">
             <AnimatePresence initial={false}>

@@ -3,7 +3,7 @@ import { projects, type Project } from "@/content/projects";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHead } from "@/components/ui/SectionHead";
 import { ProjectCover } from "@/components/projects/ProjectCover";
-import { OninaScreens } from "@/components/projects/OninaScreens";
+import { Screens } from "@/components/projects/Screens";
 
 export function Projects() {
   const featured = projects.find((p) => p.featured);
@@ -51,32 +51,34 @@ export function Projects() {
 function Featured({ project: p }: { project: Project }) {
   return (
     <Reveal className="mt-12">
-      <article id="onina" className="card grid scroll-mt-28 overflow-hidden lg:grid-cols-12">
+      <article id={p.slug} className="card grid scroll-mt-28 overflow-hidden lg:grid-cols-12">
         <div className="flex flex-col p-7 sm:p-10 lg:col-span-5">
           <div className="flex flex-wrap items-center gap-2">
             <span className="label">Projet phare</span>
-            {p.status && (
-              <span className="inline-flex items-center gap-2 font-mono text-xs text-paper-mute">
-                <span className="h-1.5 w-1.5 animate-pulse-dot rounded-full bg-warm" /> {p.status}
-              </span>
-            )}
+            <span className="font-mono text-xs text-paper-mute">
+              {p.company} · {p.role}
+            </span>
           </div>
           <h3 className="mt-6 text-4xl font-bold tracking-tight">
             {p.name} <span className="text-gradient">· {p.category}</span>
           </h3>
-          <p className="mt-4 leading-relaxed text-paper-dim">
-            Plateforme web et mobile visant à connecter les différents acteurs de l&apos;immobilier à Madagascar. Fondateur et
-            développeur : besoin, produit, architecture, frontend, backend, mobile, déploiement et intégration de l&apos;IA.
-          </p>
-          <p className="mt-5 font-mono text-xs uppercase tracking-[0.16em] text-warm">Founder · Product · Engineering · AI</p>
-          <ul className="mt-5 grid grid-cols-2 gap-x-4 gap-y-2 text-sm text-paper-dim">
-            {["Recherche IA", "Filtres avancés", "Carte des biens", "Messagerie", "Publication d'annonces", "Français · Malagasy"].map((f) => (
-              <li key={f} className="flex items-center gap-2">
-                <span className="text-signal" aria-hidden="true">›</span>
-                {f}
-              </li>
-            ))}
-          </ul>
+          <p className="mt-4 leading-relaxed text-paper-dim">{p.pitch ?? p.solution}</p>
+          {p.results?.map((r) => (
+            <p key={r.label} className="mt-5 flex items-baseline gap-3">
+              <span className="text-4xl font-bold tracking-tight text-warm">{r.value}</span>
+              <span className="text-paper-dim">{r.label}</span>
+            </p>
+          ))}
+          {p.highlights && (
+            <ul className="mt-5 grid grid-cols-2 gap-x-4 gap-y-2 text-sm text-paper-dim">
+              {p.highlights.map((f) => (
+                <li key={f} className="flex items-center gap-2">
+                  <span className="text-signal" aria-hidden="true">›</span>
+                  {f}
+                </li>
+              ))}
+            </ul>
+          )}
           <div className="mt-5 flex flex-wrap gap-1.5">
             {p.stack.map((s) => (
               <span key={s} className="tag">
@@ -92,10 +94,16 @@ function Featured({ project: p }: { project: Project }) {
           </div>
         </div>
         <div className="relative flex items-center overflow-hidden border-line bg-gradient-to-br from-signal/15 via-ink-850 to-warm/10 p-6 max-lg:border-t sm:p-10 lg:col-span-7 lg:border-l">
-          <div className="w-full">
-            <OninaScreens />
-            <p className="mt-3 font-mono text-[0.68rem] text-paper-mute">Captures réelles · onina.mg · web et mobile</p>
-          </div>
+          {p.screenshots ? (
+            <div className="w-full">
+              <Screens shots={p.screenshots} />
+              <p className="mt-3 font-mono text-[0.68rem] text-paper-mute">Capture réelle · {p.screenshots.url}</p>
+            </div>
+          ) : (
+            <div className="theme-dark relative aspect-[16/10] w-full">
+              <ProjectCover slug={p.slug} />
+            </div>
+          )}
         </div>
       </article>
     </Reveal>

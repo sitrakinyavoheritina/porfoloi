@@ -12,7 +12,8 @@ const norm = (t: string) => t.replace(/\s*\d+\+?$/, "");
 export function Missions() {
   const [filter, setFilter] = useState<string | null>(null);
 
-  const ordered = useMemo(() => [...experiences].sort((a, b) => b.start - a.start), []);
+  // Display order comes from the data (Kerlog first: the main experience).
+  const ordered = experiences;
   const techs = useMemo(() => {
     const count = new Map<string, number>();
     experiences.forEach((e) => new Set(e.stack.map(norm)).forEach((t) => count.set(t, (count.get(t) ?? 0) + 1)));

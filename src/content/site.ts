@@ -18,8 +18,8 @@ export const profile = {
 
 export const contact = {
   email: "sitrakinyavoheritina@gmail.com",
-  linkedin: "https://www.linkedin.com/in/sitrakinyavoheritina1103/",
-  linkedinHandle: "in/sitrakinyavoheritina1103",
+  linkedin: "https://www.linkedin.com/in/sitralinyavoheritina1103/",
+  linkedinHandle: "in/sitralinyavoheritina1103",
   location: "Antananarivo, Madagascar",
 } as const;
 
@@ -33,7 +33,7 @@ export const cvPath: string | null = null;
  * Portrait shown in the round avatar (hero + navbar). Leave `null` to show the "HR" monogram.
  * Example: drop `heritiana.jpg` in /public and set "/heritiana.jpg".
  */
-export const photoPath: string | null = null;
+export const photoPath: string | null = "/heritiana.jpg";
 
 export const navItems = [
   { label: "Interventions", href: "/#interventions" },

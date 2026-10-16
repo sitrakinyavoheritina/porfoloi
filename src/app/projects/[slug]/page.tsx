@@ -5,7 +5,7 @@ import { getProject, projects } from "@/content/projects";
 import { Reveal, RevealLines } from "@/components/ui/Reveal";
 import { Arrow } from "@/components/ui/Arrow";
 import { ProjectCover } from "@/components/projects/ProjectCover";
-import { BrowserShot, PhoneShot } from "@/components/projects/OninaScreens";
+import { BrowserShot, PhoneShot } from "@/components/projects/Screens";
 
 type Params = { slug: string };
 
@@ -77,15 +77,15 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
         </Reveal>
 
         <Reveal delay={0.25}>
-          {p.slug === "onina" ? (
-            // Real screenshots for Onina
+          {p.screenshots ? (
+            // Real screenshots
             <div className="mt-6 rounded-3xl border border-line bg-gradient-to-br from-signal/15 via-ink-850 to-warm/10 p-5 sm:p-10">
-              <div className="grid items-end gap-6 md:grid-cols-[1fr_auto]">
-                <BrowserShot priority />
-                <PhoneShot className="mx-auto w-48 md:w-52" />
+              <div className={`grid items-end gap-6 ${p.screenshots.mobile ? "md:grid-cols-[1fr_auto]" : ""}`}>
+                <BrowserShot shots={p.screenshots} priority />
+                <PhoneShot shots={p.screenshots} className="mx-auto w-48 md:w-52" />
               </div>
               <p className="mt-4 font-mono text-xs text-paper-mute">
-                Captures réelles d&apos;onina.mg — web (thème selon votre préférence) et version mobile.
+                {p.screenshots.mobile ? "Captures réelles — web et version mobile." : "Capture réelle."}
               </p>
             </div>
           ) : (
